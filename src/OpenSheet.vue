@@ -9,7 +9,7 @@ import { OpenDocument } from '@/lib/core/Document';
 
 export default defineComponent({name: 'OpenSheet',
     data() {
-        const ui: UI = undefined;
+        const ui: UI | null = null;
 
         return {
             ui
@@ -27,7 +27,7 @@ export default defineComponent({name: 'OpenSheet',
             this.ui.execCmd(command, args);
         },
         load(file: string) {
-            this.ui.load(file);
+            this.ui?.load(file);
         }
     }
 })

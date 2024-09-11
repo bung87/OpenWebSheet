@@ -53,6 +53,7 @@ describe('ColorPicker', () => {
   it('should use WHITE when the value is null', () => {
     const wrapper = shallowMount(ColorPicker, {
       propsData: {
+        //@ts-ignore
         value: null,
       },
     });
