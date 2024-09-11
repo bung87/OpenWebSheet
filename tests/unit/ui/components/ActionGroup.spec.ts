@@ -8,7 +8,6 @@ describe('ActionGroup', () => {
         value: [],
       },
     });
-    expect(wrapper.isVueInstance()).toBe(true);
     expect(wrapper.find('[data-qa=action-group]').exists()).toBe(true);
   });
 

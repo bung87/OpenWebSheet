@@ -1,26 +1,30 @@
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
-import Vue from 'vue';
+import Vue, { defineComponent } from 'vue';
 
-@Component({name: 'ColorPicker'})
-export default class ColorPicker extends Vue {
-  @Prop({default: '#ffffff'})
-  public value!: string;
-
-  @Prop()
-  public label?: string;
-
-  get color() {
-    if (!this.value) {
-      return '#ffffff';
+export default defineComponent({name: 'ColorPicker',
+    computed: {
+        color: {
+            get() {
+                if (!this.value) {
+                  return '#ffffff';
+                }
+                return this.value;
+            },
+            set(newValue) {
+                this.$emit('input', newValue);
+            }
+        }
+    },
+    props: {
+        value: {default: '#ffffff',
+            type: String
+        },
+        label: {
+            type: String
+        }
     }
-    return this.value;
-  }
+})
 
-  set color(newValue) {
-    this.$emit('input', newValue);
-  }
-}
 </script>
 <template>
     <div class="color-picker" data-qa="color-picker">

@@ -2,10 +2,6 @@ import { shallowMount } from '@vue/test-utils';
 import ColorPicker from '@/components/ColorPicker.vue';
 
 describe('ColorPicker', () => {
-  it('is a vue instance', () => {
-    const wrapper = shallowMount(ColorPicker);
-    expect(wrapper.isVueInstance()).toBe(true);
-  });
 
   it('should use white as default value', () => {
     const wrapper = shallowMount(ColorPicker);

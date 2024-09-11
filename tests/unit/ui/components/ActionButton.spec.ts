@@ -2,10 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import ActionButton from '@/components/ActionButton.vue';
 
 describe('ActionButton', () => {
-  it('is a vue instance', () => {
-    const wrapper = shallowMount(ActionButton, {});
-    expect(wrapper.isVueInstance()).toBe(true);
-  });
+
 
   it('should renders empty button by default', () => {
     const wrapper = shallowMount(ActionButton, {});

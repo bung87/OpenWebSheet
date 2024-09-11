@@ -22,27 +22,34 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
-import Vue from 'vue';
+import Vue, { defineComponent } from 'vue';
 
-@Component({name: 'FormulaBar'})
-export default class FormulaBar extends Vue {
-  public active = false;
+export default defineComponent({name: 'FormulaBar',
+    data() {
+        return {
+            active: false
+        };
+    },
+    computed: {
+        formula: {
+            get() {
+                return this.value;
+            },
+            set(newFormula: string) {
+                this.$emit('input', newFormula);
+            }
+        }
+    },
+    props: {
+        value: {
+            type: String
+        },
+        label: {
+            type: String
+        }
+    }
+})
 
-  @Prop()
-  public value!: string;
-
-  @Prop()
-  public label!: string;
-
-  get formula() {
-    return this.value;
-  }
-
-  set formula(newFormula: string) {
-    this.$emit('input', newFormula);
-  }
-}
 </script>
 
 <style lang="scss" scoped>

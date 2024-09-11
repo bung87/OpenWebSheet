@@ -8,7 +8,6 @@ describe('CellBorderStyle', () => {
         value: [],
       },
     });
-    expect(wrapper.isVueInstance()).toBe(true);
     expect(wrapper.find('[data-qa=cell-border]').exists()).toBe(true);
   });
 

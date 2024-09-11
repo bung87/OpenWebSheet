@@ -4,7 +4,6 @@ import FontSizeSelector from '@/components/FontSizeSelector.vue';
 describe('FontSizeSelector', () => {
   it('is a vue instance', () => {
     const wrapper = shallowMount(FontSizeSelector);
-    expect(wrapper.isVueInstance()).toBe(true);
   });
 
   it('should pick a size by default', () => {

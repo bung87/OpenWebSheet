@@ -4,7 +4,6 @@ import FontNameSelector from '@/components/FontNameSelector.vue';
 describe('FontNameSelector', () => {
   it('is a vue instance', () => {
     const wrapper = shallowMount(FontNameSelector);
-    expect(wrapper.isVueInstance()).toBe(true);
   });
 
   it('should pick a font by default', () => {

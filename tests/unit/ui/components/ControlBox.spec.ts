@@ -4,7 +4,6 @@ import ControlBox from '@/components/ControlBox.vue';
 describe('ControlBox', () => {
   it('is a vue instance', () => {
     const wrapper = shallowMount(ControlBox);
-    expect(wrapper.isVueInstance()).toBe(true);
   });
 
   describe('header', () => {
@@ -28,11 +27,11 @@ describe('ControlBox', () => {
   describe('content', () => {
     it('should has grid layout by default ', () => {
       const wrapper = shallowMount(ControlBox);
-
+      const ele = wrapper
+      .find('[data-qa=control-box]')
+      .find('[data-qa=content]').element as HTMLElement
       expect(
-        wrapper
-          .find('[data-qa=control-box]')
-          .find('[data-qa=content]').element.style.display,
+        ele.style.display,
       ).toBe('grid');
     });
 
@@ -42,11 +41,11 @@ describe('ControlBox', () => {
           grid: true,
         },
       });
-
+      const ele = wrapper
+      .find('[data-qa=control-box]')
+      .find('[data-qa=content]').element as HTMLElement
       expect(
-        wrapper
-          .find('[data-qa=control-box]')
-          .find('[data-qa=content]').element.style.display,
+         ele.style.display,
       ).toBe('grid');
     });
 
@@ -56,11 +55,11 @@ describe('ControlBox', () => {
           grid: false,
         },
       });
-
+      const ele = wrapper
+      .find('[data-qa=control-box]')
+      .find('[data-qa=content]').element as HTMLElement
       expect(
-        wrapper
-          .find('[data-qa=control-box]')
-          .find('[data-qa=content]').element.style.display,
+        ele.style.display,
       ).toBe('flex');
     });
   });

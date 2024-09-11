@@ -1,6 +1,5 @@
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
-import Vue from 'vue';
+import Vue, { defineComponent, PropType } from 'vue';
 import { RibbonMenuItem } from '@/components/RibbonMenu';
 import Ribbon from '@/components/Ribbon.vue';
 import ControlBox from '@/components/ControlBox.vue';
@@ -13,119 +12,120 @@ import { Appearance, TextAlign } from '@/lib/core/Appearance';
 import FontFamilySelector from '@/components/FontNameSelector.vue';
 import { Color } from '@/lib/common/types';
 
-@Component({
+export default defineComponent({
   name: 'RibbonMenu',
   components: {
     FontFamilySelector,
     ActionButton, ColorPicker, ActionGroup, FontSizeSelector, CellBorderStyle, ControlBox, Ribbon,
   },
+    data() {
+      const menu: RibbonMenuItem[] = [
+              {name: 'menu-home', label: 'Home'},
+              {name: 'menu-formulas', label: 'Formulas'},
+              {name: 'menu-data', label: 'Data'},
+              {name: 'menu-view', label: 'View'},
+              {name: 'menu-info', label: 'About'},
+            ];
+      const borderColor: Color = 'black';
+
+        return {
+            active: 'menu-home',
+            borderColor,
+            menu,
+            fileMode: 'file'
+        };
+    },
+    computed: {
+        isLocalMode() {
+            return this.fileMode === 'local';
+        },
+        activeStyle() {
+            return this.appearance || new Appearance();
+        },
+        textAlignment() {
+            return [
+              {
+                name: 'left',
+                selected: this.activeStyle.textAlign === TextAlign.Left,
+              },
+              {
+                name: 'center',
+                selected: this.activeStyle.textAlign === TextAlign.Center,
+              },
+              {
+                name: 'right',
+                selected: this.activeStyle.textAlign === TextAlign.Right,
+              },
+            ];
+        },
+        fontStyle() {
+            return [
+              {name: 'bold', selected: this.activeStyle.bold},
+              {name: 'italic', selected: this.activeStyle.italic},
+              {name: 'underline', selected: this.activeStyle.underline},
+            ];
+        },
+        foreColor: {
+            get() {
+                return this.activeStyle.text;
+            },
+            set(color: string) {
+                this.onAction('fg-color', color);
+            }
+        },
+        fillColor: {
+            get() {
+                return this.activeStyle.background;
+            },
+            set(color: string) {
+                this.onAction('bg-color', color);
+            }
+        },
+        fontSize: {
+            get() {
+                return this.activeStyle.fontSize;
+            },
+            set(newSize: number) {
+                this.onAction('font-size', newSize);
+            }
+        },
+        fontFamily: {
+            get() {
+                return this.activeStyle.fontName;
+            },
+            set(newFont: string) {
+                this.onAction('font-name', newFont);
+            }
+        }
+    },
+    methods: {
+        changeMode(newMode: string) {
+            this.fileMode = newMode;
+            this.$emit('mode-changed', newMode );
+        },
+        onBorderChanged(borderStructure: string) {
+            this.onAction(borderStructure, this.borderColor);
+        },
+        onAlign(alignment: string) {
+            this.onAction('align', alignment);
+        },
+        toggleMerge() {
+            this.onAction(this.state.isMerged ? 'unmerge' : 'merge');
+        },
+        onAction(actionName: string, args?: any) {
+            this.$emit('action', {actionName, args});
+        }
+    },
+    props: {
+        appearance: {
+            type: Object as PropType<Appearance>
+        },
+        state: {default: () => ({isMerged: true}),
+            type: Object as PropType<{ isMerged: boolean }>
+        }
+    }
 })
-export default class RibbonMenu extends Vue {
 
-  get isLocalMode() {
-    return this.fileMode === 'local';
-  }
-
-  get activeStyle() {
-    return this.appearance || new Appearance();
-  }
-
-  get textAlignment() {
-    return [
-      {
-        name: 'left',
-        selected: this.activeStyle.textAlign === TextAlign.Left,
-      },
-      {
-        name: 'center',
-        selected: this.activeStyle.textAlign === TextAlign.Center,
-      },
-      {
-        name: 'right',
-        selected: this.activeStyle.textAlign === TextAlign.Right,
-      },
-    ];
-  }
-
-  get fontStyle() {
-    return [
-      {name: 'bold', selected: this.activeStyle.bold},
-      {name: 'italic', selected: this.activeStyle.italic},
-      {name: 'underline', selected: this.activeStyle.underline},
-    ];
-  }
-
-  get foreColor() {
-    return this.activeStyle.text;
-  }
-
-  set foreColor(color: string) {
-    this.onAction('fg-color', color);
-  }
-
-  get fillColor() {
-    return this.activeStyle.background;
-  }
-
-  set fillColor(color: string) {
-    this.onAction('bg-color', color);
-  }
-
-  get fontSize() {
-    return this.activeStyle.fontSize;
-  }
-
-  set fontSize(newSize: number) {
-    this.onAction('font-size', newSize);
-  }
-
-  get fontFamily() {
-    return this.activeStyle.fontName;
-  }
-
-  set fontFamily(newFont: string) {
-    this.onAction('font-name', newFont);
-  }
-  public active = 'menu-home';
-
-  @Prop()
-  public appearance!: Appearance;
-
-  @Prop({default: () => ({isMerged: true})})
-  public state!: { isMerged: boolean };
-
-  public borderColor: Color = 'black';
-
-  public menu: RibbonMenuItem[] = [
-    {name: 'menu-home', label: 'Home'},
-    {name: 'menu-formulas', label: 'Formulas'},
-    {name: 'menu-data', label: 'Data'},
-    {name: 'menu-view', label: 'View'},
-    {name: 'menu-info', label: 'About'},
-  ];
-  private fileMode = 'file';
-
-  public changeMode(newMode: string) {
-    this.fileMode = newMode;
-    this.$emit('mode-changed', newMode );
-  }
-
-  public onBorderChanged(borderStructure: string) {
-    this.onAction(borderStructure, this.borderColor);
-  }
-
-  public onAlign(alignment: string) {
-    this.onAction('align', alignment);
-  }
-
-  public toggleMerge() {
-    this.onAction(this.state.isMerged ? 'unmerge' : 'merge');
-  }
-
-  public onAction(actionName: string, args?: any) {
-    this.$emit('action', {actionName, args});
-  }
-}
 </script>
 
 <template>
